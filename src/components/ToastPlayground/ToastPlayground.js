@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../Button';
+import Toast from '../Toast';
 
 import styles from './ToastPlayground.module.css';
 
@@ -9,6 +10,11 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('')
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
+  const [toastShown, setToastShown] = React.useState(false)
+
+  function handleToast(value) {
+    setToastShown(value)
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -17,7 +23,15 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <div className={styles.controlsWrapper}>
+      {toastShown && <Toast variant={variant} message={message} handleToast={handleToast} />}
+
+      <form
+        className={styles.controlsWrapper}
+        onSubmit={(event) => {
+          event.preventDefault()
+          handleToast(true)
+        }}
+      >
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -29,6 +43,7 @@ function ToastPlayground() {
           <div className={styles.inputWrapper}>
             <textarea
               id="message"
+              required={true}
               className={styles.messageInput}
               value={message}
               onChange={(event) => {
@@ -49,6 +64,7 @@ function ToastPlayground() {
                     id={id}
                     type="radio"
                     name="variant"
+                    required={true}
                     value={option}
                     checked={option === variant}
                     onChange={event => {
@@ -67,10 +83,12 @@ function ToastPlayground() {
           <div
             className={`${styles.inputWrapper} ${styles.radioWrapper}`}
           >
-            <Button>Pop Toast!</Button>
+            <Button onClick={() => {
+              console.log("Button clicked!")
+            }}>Pop Toast!</Button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
