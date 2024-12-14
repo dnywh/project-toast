@@ -7,9 +7,8 @@ import styles from './ToastPlayground.module.css';
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
-
-  const [selectedVariant, setSelectedVariant] = React.useState('notice')
   const [message, setMessage] = React.useState('')
+  const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
 
   return (
     <div className={styles.wrapper}>
@@ -28,31 +27,38 @@ function ToastPlayground() {
             Message
           </label>
           <div className={styles.inputWrapper}>
-            <textarea id="message" className={styles.messageInput} value={message} onChange={(event) => { setMessage(event.target.value); console.log(event.target.value) }} />
+            <textarea
+              id="message"
+              className={styles.messageInput}
+              value={message}
+              onChange={(event) => {
+                setMessage(event.target.value)
+              }}
+            />
           </div>
         </div>
 
         <div className={styles.row}>
           <div className={styles.label}>Variant</div>
           <div className={`${styles.inputWrapper} ${styles.radioWrapper}`}>
-
-            {VARIANT_OPTIONS.map((option, index) => (
-              <label key={index} htmlFor={`variant-${option}`}>
-                {console.log(option, selectedVariant)}
-                <input
-                  id={`variant-${option}`}
-                  type="radio"
-                  name="variant"
-                  value={option}
-                  checked={option === selectedVariant}
-                  onChange={event => {
-                    setSelectedVariant(event.target.value)
-                  }}
-                />
-                {option}
-              </label>
-            ))}
-
+            {VARIANT_OPTIONS.map(option => {
+              const id = `variant-${option}`
+              return (
+                <label key={id} htmlFor={id}>
+                  <input
+                    id={id}
+                    type="radio"
+                    name="variant"
+                    value={option}
+                    checked={option === variant}
+                    onChange={event => {
+                      setVariant(event.target.value)
+                    }}
+                  />
+                  {option}
+                </label>
+              )
+            })}
           </div>
         </div>
 
