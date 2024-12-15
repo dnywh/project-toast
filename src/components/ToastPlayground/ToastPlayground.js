@@ -8,12 +8,12 @@ import styles from './ToastPlayground.module.css';
 const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 
 function ToastPlayground() {
+  const [isRendered, setIsRendered] = React.useState(false)
   const [message, setMessage] = React.useState('')
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
-  const [toastShown, setToastShown] = React.useState(false)
 
-  function handleToast(value) {
-    setToastShown(value)
+  function handleDismiss(value) {
+    setIsRendered(value)
   }
 
   return (
@@ -23,13 +23,20 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      {toastShown && <Toast variant={variant} message={message} handleToast={handleToast} />}
+      {isRendered && (
+        <Toast
+          variant={variant}
+          handleDismiss={handleDismiss}
+        >
+          {message}
+        </Toast>
+      )}
 
       <form
         className={styles.controlsWrapper}
         onSubmit={(event) => {
           event.preventDefault()
-          handleToast(true)
+          handleDismiss(true)
         }}
       >
         <div className={styles.row}>
