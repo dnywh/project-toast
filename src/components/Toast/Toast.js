@@ -46,7 +46,4 @@ function Toast({ id, variant = "notice", children }) {
   );
 }
 
-
-
-
 export default Toast;
