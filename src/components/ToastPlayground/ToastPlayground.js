@@ -10,8 +10,31 @@ const VARIANT_OPTIONS = ['notice', 'warning', 'success', 'error'];
 function ToastPlayground() {
   const [message, setMessage] = React.useState('')
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
-  const [toastStack, setToastStack] = React.useState([])
+  const [toasts, setToasts] = React.useState([])
 
+  function handleCreateToast(event) {
+    event.preventDefault()
+    const nextToasts = [
+      ...toasts,
+      {
+        id: crypto.randomUUID(),
+        message,
+        variant,
+      }
+    ]
+    setToasts(nextToasts)
+
+    // Clear form
+    setMessage('')
+    setVariant(VARIANT_OPTIONS[0])
+  }
+
+  function handleDismiss(id) {
+    const nextToasts = toasts.filter((toast) => {
+      return toast.id !== id
+    })
+    setToasts(nextToasts)
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -20,26 +43,11 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toastStack={toastStack} setToastStack={setToastStack} />
+      <ToastShelf toasts={toasts} handleDismiss={handleDismiss} />
 
       <form
         className={styles.controlsWrapper}
-        onSubmit={(event) => {
-          event.preventDefault()
-          const nextToastStack = [
-            ...toastStack,
-            {
-              id: crypto.randomUUID(),
-              message,
-              variant,
-            }
-          ]
-          setToastStack(nextToastStack)
-
-          // Clear form
-          setMessage('')
-          setVariant(VARIANT_OPTIONS[0])
-        }}
+        onSubmit={(event) => handleCreateToast(event)}
       >
         <div className={styles.row}>
           <label
