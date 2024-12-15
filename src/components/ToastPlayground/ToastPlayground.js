@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from '../Button';
 import Toast from '../Toast';
+import ToastShelf from '../ToastShelf';
 
 import styles from './ToastPlayground.module.css';
 
@@ -11,9 +12,10 @@ function ToastPlayground() {
   const [isRendered, setIsRendered] = React.useState(false)
   const [message, setMessage] = React.useState('')
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0])
+  const [toastStack, setToastStack] = React.useState([])
 
-  function handleDismiss(value) {
-    setIsRendered(value)
+  function handleDismiss() {
+    setIsRendered(false)
   }
 
   return (
@@ -32,11 +34,17 @@ function ToastPlayground() {
         </Toast>
       )}
 
+      <ToastShelf toastStack={toastStack} />
+
       <form
         className={styles.controlsWrapper}
         onSubmit={(event) => {
           event.preventDefault()
-          handleDismiss(true)
+          setIsRendered(true)
+          const nextToast = message
+          const nextToastStack = [...toastStack, nextToast]
+          // console.log(nextToastStack)
+          setToastStack(nextToastStack)
         }}
       >
         <div className={styles.row}>
