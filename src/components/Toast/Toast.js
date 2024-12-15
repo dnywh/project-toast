@@ -25,8 +25,6 @@ function Toast({ id, variant = "notice", children }) {
 
   const IconToRender = ICONS_BY_VARIANT[variant]
 
-  useEscapeKey(() => dismissToast(id))
-
   return (
     <div className={`${styles.toast} ${styles[variant]}`}>
       <div className={styles.iconContainer}>
@@ -48,19 +46,7 @@ function Toast({ id, variant = "notice", children }) {
   );
 }
 
-function useEscapeKey(callback) {
-  React.useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.code === 'Escape') {
-        callback();
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [callback])
-}
+
 
 
 export default Toast;
